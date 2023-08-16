@@ -11,6 +11,7 @@ WIDESCREEN = (1280, 720)
 ORIGINAL = (1280, 960)
 
 FONT = 'resources/fonts/Roboto-Bold.ttf'
+FONT = "resources/fonts/Tele Neo Office Bold.ttf"
 
 
 def has_transparency(img):
@@ -87,11 +88,11 @@ def create_bg_image(filename, screen_size='original'):
 def main(argv):
     parser = argparse.ArgumentParser(
         description='Create Image')
-    # parser.add_argument('-l', '--access_token', required=True)
+    parser.add_argument('-c', '--config', required=True)
     parser.add_argument('-b', '--background', required=False)
     args = parser.parse_args(argv)
 
-    with open('resources/configs/tsystems1.json', 'r') as file:
+    with open(args.config, 'r') as file:
         config = json.load(file)
 
     # TODO:  Grab this from the access-token room information
