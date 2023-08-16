@@ -1,7 +1,7 @@
 import argparse
 import json
 import sys
-# import requests
+import requests
 from eyeson import EyesonClient
 
 BASE_URL = 'https://api.eyeson.team'
@@ -23,7 +23,7 @@ def main(argv):
     # ec.create_snapshot()
     # ec.get_room_details()
     # ec.image_overlay(url='https://eyeson-team.github.io/api/images/eyeson-overlay.png')
-    ec.local_image_overlay(filename='../images/eyeson-overlay.png')
+    ec.local_image_overlay(filename='../resources/images/eyeson-overlay.png')
     ec.playback(url='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4', )
 
 

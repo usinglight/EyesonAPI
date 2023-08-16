@@ -3,8 +3,8 @@ import json
 import sys
 import requests
 import os
+from eyeson import EyesonClient
 
-BASE_URL = 'https://api.eyeson.team'
 
 def main(argv):
 
@@ -13,11 +13,14 @@ def main(argv):
     parser.add_argument('-p', '--api_token', required=False, default=os.environ['EYESON_API'])
     args = parser.parse_args(argv)
 
-    headers = {'Authorization': args.api_token}
-    response = requests.get(BASE_URL + '/webhooks', headers=headers)
-    print(response.status_code)
-    print(response.text)
-    json_response = json.loads(response.text)
+    with open('../current_room.json', 'r') as f:
+        current_room = json.load(f)
+    access_key = current_room['access_key']
+
+    ec = EyesonClient.get_room(access_key)
+    ec.authenticate(args.api_token)
+    print(ec.get_webhooks())
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])

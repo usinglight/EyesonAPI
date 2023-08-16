@@ -10,7 +10,8 @@ import yaml
 WIDESCREEN = (1280, 720)
 ORIGINAL = (1280, 960)
 
-FONT = '../resources/Roboto-Bold.ttf'
+FONT = 'resources/fonts/Roboto-Bold.ttf'
+FONT = "resources/fonts/Tele Neo Office Bold.ttf"
 
 
 def has_transparency(img):
@@ -37,28 +38,30 @@ def create_text_box(img, content, position, fg_color, font=FONT, font_size=20):
     return img
 
 
-def create_image(image_layout, locations=[], image_dir='../images/hr_images/', screen_size='original'):
+def create_image(config, image_dir='../', screen_size='original'):
+    components = config['components']
+
     # Start with a transparent image
     if screen_size == 'widescreen':
         new_image = Image.new('RGBA', WIDESCREEN, (0, 0, 0, 0))
     else:
         new_image = Image.new('RGBA', ORIGINAL, (0, 0, 0, 0))
 
-    for i in range(len(image_layout)):
-        image_layout_info = image_layout[i]
-        img_offset = (image_layout_info['x'], image_layout_info['y'])
+    for i in range(len(components)):
+        comp = components[i]
+        img_offset = (comp['x'], comp['y'])
 
-        if (locations[i].startswith('text:')):
-            img = Image.new('RGBA', (image_layout_info['width'], image_layout_info['height']),
-                            ImageColor.getrgb('#effdca'))
-            content = locations[i][5:]
-            img = create_text_box(img, content, (50, 50), '#3f85f6')
+        if (comp['type'] == 'text'):
+            img = Image.new('RGBA', (comp['width'], comp['height']),
+                            (0,0,0,0))
+            content = comp['content']
+            img = create_text_box(img, content, (0,0), '#ffffff')
             new_image.paste(img, img_offset)
-        elif (locations[i].startswith('img:')):
-            filename = locations[i][4:]
+        elif (comp['type'] == 'image'):
+            filename = comp['location']
             foreground = Image.open(filename)
             foreground = ImageOps.contain(foreground,
-                                          (image_layout_info['width'], image_layout_info['height']))  # resize
+                                          (comp['width'], comp['height']))  # resize
 
             if has_transparency(foreground):
                 new_image.paste(foreground, img_offset, mask=foreground)
@@ -86,33 +89,23 @@ def main(argv):
     parser = argparse.ArgumentParser(
         description='Create Image')
     # parser.add_argument('-l', '--access_token', required=True)
+    parser.add_argument('-b', '--background', required=False)
     args = parser.parse_args(argv)
 
-    with open('../resources/configs/tsystems1.json', 'r') as file:
+    with open('resources/configs/tsystems1.json', 'r') as file:
         config = json.load(file)
-
-
-    # Grab layout information
-    with open('../custom_layout_maps.yml', 'r') as file:
-        layout = yaml.safe_load(file)
 
     # TODO:  Grab this from the access-token room information
     screen_size = 'original'  # can be original/widescreen (1280 x 768, 1280x960)
 
-    layout_name = config['name']
-    locations = config['locations']
-
-    image_layout = layout[screen_size][layout_name]
-
-
-
-    foreground = create_image(image_layout, locations)
+    foreground = create_image(config)
     # foreground.show()
-    foreground.save('../tmp/test.png','PNG')
+    foreground.save('tmp/fg.png','PNG')
 
-    #background = create_bg_image('../images/tsystems_images/drone.png')
-    #background.show()
-
+    if(args.background):
+        background = create_bg_image(args.background)
+        # background.show()
+        background.save('tmp/bg.png','PNG')
 
 if __name__ == "__main__":
     main(sys.argv[1:])
