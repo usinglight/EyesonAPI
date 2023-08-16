@@ -11,7 +11,6 @@ WIDESCREEN = (1280, 720)
 ORIGINAL = (1280, 960)
 
 FONT = 'resources/fonts/Roboto-Bold.ttf'
-FONT = "resources/fonts/Tele Neo Office Bold.ttf"
 
 
 def has_transparency(img):
