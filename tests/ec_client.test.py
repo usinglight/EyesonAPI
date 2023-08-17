@@ -2,7 +2,7 @@ import argparse
 import json
 import sys
 import requests
-from eyeson import EyesonClient
+from eyeson.eyeson import EyesonClient
 
 
 def main(argv):
