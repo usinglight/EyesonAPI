@@ -14,7 +14,6 @@ def main(argv):
 
     parser = argparse.ArgumentParser(
         description='Main Test Application')
-    # parser.add_argument('-a', '--access_key', required=True)
     parser.add_argument('-p', '--api_token', required=False, default=os.environ['EYESON_API'])
     args = parser.parse_args(argv)
 
@@ -24,11 +23,9 @@ def main(argv):
         current_room = json.load(f)
     access_key = current_room['access_key']
 
-    # ec = EyesonClient.get_room(access_key, base_url=BASE_URL)
-    # ec.delete_layers(-1)
-
-    response = requests.delete(BASE_URL + '/rooms/' + access_key + '/layers/1', headers=headers)
-    response = requests.delete(BASE_URL + '/rooms/' + access_key + '/layers/-1', headers=headers)
+    ec = EyesonClient.get_room(access_key, debug=True)
+    ec.delete_layers(1)
+    ec.delete_layers(-1)
 
 
 if __name__ == '__main__':
