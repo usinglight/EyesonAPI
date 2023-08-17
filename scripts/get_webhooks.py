@@ -6,9 +6,7 @@ import os
 from eyeson.eyeson import EyesonClient
 
 
-
 def main(argv):
-
     parser = argparse.ArgumentParser(
         description='Main Test Application')
     parser.add_argument('-p', '--api_token', required=False, default=os.environ['EYESON_API'])
