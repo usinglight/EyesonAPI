@@ -8,12 +8,12 @@ BASE_URL = 'https://api.eyeson.team'
 class EyesonClient:
     """Http client for connecting to Eyeson"""
 
-    def __init__(self, access_key, base_url=None, debug=False):
+    def __init__(self, access_key, api_key=None, base_url=None, debug=False):
         self.base_url = base_url
         self.debug = debug
         self.session = requests.session()
         self.access_key = access_key
-        self.api_key = 'FOO'  # TODO
+        self.api_key = api_key
         # self.users = []
 
     def __debug(self, string):
@@ -98,6 +98,42 @@ class EyesonClient:
             self.__debug('Unathorized operation: ' + caller)
             return {'Error 403': 'Unauthorized for ' + caller}
 
+
+    # Initialize room or connect to existing room
+
+    @classmethod
+    def get_room(cls, access_key, base_url=BASE_URL, debug=True, api_key=None):
+        client = cls(access_key, base_url, debug=debug)
+        return client
+
+    @classmethod
+    def create_room(cls, username, api_key, custom_params={}, base_url=BASE_URL, debug=True):
+        headers = {"Authorization": api_key}
+        params = {'user[name]': username,
+                  'user[id]': username,
+                  'id': 'room1',
+                  'options[layout]': 'custom',
+                  'options[sfu_mode]': 'disabled',
+                  'options[cupythostom_fields][virtual_background]': True,
+                  # 'options[widescreen]': True,
+                  'options[custom_fields][virtual_background_allow_guest]': True
+                  }
+
+        params = {**params, **custom_params}
+
+
+        response = requests.post(BASE_URL + '/rooms', headers=headers, params=params)
+        if (response.status_code == 201):
+            print('Success:')
+            json_response = json.loads(response.text)
+            print('GUI: ' + json_response['links']['gui'])
+            print('Guest: ' + json_response['links']['guest_join'])
+            print('Access Key: ' + json_response['access_key'])
+
+        client = cls(json_response['access_key'], api_key=api_key, base_url=base_url, debug=debug)
+        return client
+
+
     def authenticate(self, api_key):
         self.api_key = api_key
 
@@ -114,11 +150,14 @@ class EyesonClient:
 
         return self.__post('/webhooks', params, auth=True)
 
+    def get_rooms(self):
+        return self.__get('/rooms', auth=True)
 
-    @classmethod
-    def get_room(cls, token, base_url=BASE_URL, debug=True, identity=None):
-        client = cls(token, base_url, debug=debug)
-        return client
+    def get_recordings(self):
+        return self.__get('/rooms/' + self.access_key + '/recordings', auth=True)
+
+
+    # Room methods that only need access token
 
     def get_room_details(self):
         return self.__get('/rooms/' + self.access_key)
@@ -170,7 +209,6 @@ class EyesonClient:
 
     def delete_layers(self, z):
         return self.__delete('/rooms/' + self.access_key + '/layers/' + str(z))
-
 
     def playback(self, url=None, name=None, play_id=None, replacement_id=None):
 
