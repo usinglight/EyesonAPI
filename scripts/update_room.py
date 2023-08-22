@@ -3,7 +3,7 @@ import json
 import sys
 import requests
 import os
-from eyeson import EyesonClient
+from eyeson.eyeson import EyesonClient
 
 BASE_URL = 'https://api.eyeson.team'
 

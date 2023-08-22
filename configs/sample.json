@@ -1,0 +1,31 @@
+{
+  "name": "sample overlay",
+  "description": "Example",
+  "components": [
+    {
+      "name": "logo",
+      "type": "image",
+      "location": "resources/images/eyeson_logo.png",
+      "x": 1030,
+      "y": 852,
+      "width": 240,
+      "height": 96
+    },
+    {
+      "name": "title",
+      "type": "text",
+      "content": "Sample Title",
+      "x": 0,
+      "y": 887,
+      "width": 1280,
+      "height": 93
+    }
+  ]
+}
+
+
+
+
+
+
+
