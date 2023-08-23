@@ -1,3 +1,4 @@
-eyeson/__pycache__/eyeson.cpython-311.pyc
+eyeson/__pycache__/**
+EyesonAPI/__pycache__/**
 **/.DS_Store
 /docs/**
