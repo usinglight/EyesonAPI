@@ -1,7 +1,5 @@
 import argparse
-import json
 import sys
-import requests
 from eyeson.eyeson import EyesonClient
 
 

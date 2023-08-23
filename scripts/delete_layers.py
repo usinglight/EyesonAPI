@@ -1,13 +1,9 @@
 import argparse
-import json
 import sys
-import requests
-import os
 from eyeson.eyeson import EyesonClient
 
 
 def main(argv):
-
     parser = argparse.ArgumentParser(
         description='Main Test Application')
     parser.add_argument('-a', '--access_key', required=True)

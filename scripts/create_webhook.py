@@ -9,7 +9,7 @@ from eyeson.eyeson import EyesonClient
 def main(argv):
     parser = argparse.ArgumentParser(
         description='Main Test Application')
-    parser.add_argument('-u', '--url', required=False, default="https://shenoy.requestcatcher.com/snapshot")
+    parser.add_argument('-u', '--url', required=True)
     parser.add_argument('-t', '--types', required=False, default="snapshot_update")
     parser.add_argument('-p', '--api_token', required=False, default=os.environ['EYESON_API'])
     parser.add_argument('-a', '--access_key', required=True)
