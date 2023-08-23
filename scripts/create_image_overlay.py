@@ -3,7 +3,6 @@ import json
 import sys
 import requests
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageColor
-import yaml
 
 # output_name = '../output_images/fg.png'
 
@@ -11,7 +10,6 @@ WIDESCREEN = (1280, 720)
 ORIGINAL = (1280, 960)
 
 FONT = 'resources/fonts/Roboto-Bold.ttf'
-FONT = "resources/fonts/Tele Neo Office Bold.ttf"
 
 
 def has_transparency(img):
@@ -30,10 +28,10 @@ def has_transparency(img):
     return False
 
 
-def create_text_box(img, content, position, fg_color, font=FONT, font_size=20):
+def create_text_box(img, content, position, fg_color='#ffffff', font=FONT, font_size=20):
     d1 = ImageDraw.Draw(img)
     myPosition = position
-    d1.text(myPosition, content, ImageColor.getrgb(fg_color), font=ImageFont.truetype(FONT, font_size))
+    d1.text(myPosition, content, ImageColor.getrgb(fg_color), font=ImageFont.truetype(font, font_size))
     # img.show()
     return img
 
@@ -55,7 +53,8 @@ def create_image(config, image_dir='../', screen_size='original'):
             img = Image.new('RGBA', (comp['width'], comp['height']),
                             (0,0,0,0))
             content = comp['content']
-            img = create_text_box(img, content, (0,0), '#ffffff')
+            font = 'resources/fonts/' + comp['font']
+            img = create_text_box(img, content, (0,0), fg_color=comp['color'], font=font, font_size=comp['font_size'])
             new_image.paste(img, img_offset)
         elif (comp['type'] == 'image'):
             filename = comp['location']
