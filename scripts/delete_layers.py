@@ -5,8 +5,6 @@ import requests
 import os
 from eyeson.eyeson import EyesonClient
 
-BASE_URL = 'https://api.eyeson.team'
-
 
 def main(argv):
 

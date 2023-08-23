@@ -16,6 +16,5 @@ def main(argv):
     ec = EyesonClient.create_room(args.user, args.api_token)
 
 
-
 if __name__ == '__main__':
     main(sys.argv[1:])
