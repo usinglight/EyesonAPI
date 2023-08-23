@@ -8,14 +8,10 @@ from eyeson.eyeson import EyesonClient
 def main(argv):
     parser = argparse.ArgumentParser(
         description='Main Test Application')
-    # parser.add_argument('-a', '--access_token', required=True)
+    parser.add_argument('-a', '--access_key', required=True)
     args = parser.parse_args(argv)
 
-    with open('../current_room.json', 'r') as f:
-        current_room = json.load(f)
-    access_key = current_room['access_key']
-
-    ec = EyesonClient.get_room(access_key)
+    ec = EyesonClient.get_room(args.access_key)
     ec.broadcast_message('Hello World')
     # ec.change_layout(layout_type='auto', layout_name='six', users=['','','test_id','','',''])
     # ec.create_snapshot()

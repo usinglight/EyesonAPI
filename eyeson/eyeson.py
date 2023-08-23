@@ -1,6 +1,7 @@
 import requests
 import sys
 import json
+from urllib.parse import urlparse, parse_qs
 
 BASE_URL = 'https://api.eyeson.team'
 
@@ -8,11 +9,12 @@ BASE_URL = 'https://api.eyeson.team'
 class EyesonClient:
     """Http client for connecting to Eyeson"""
 
-    def __init__(self, access_key, api_key=None, base_url=None, debug=False):
+    def __init__(self, access_key=None, room_details=None, api_key=None, base_url=BASE_URL, debug=False):
         self.base_url = base_url
         self.debug = debug
         self.session = requests.session()
         self.access_key = access_key
+        self.room_details = room_details
         self.api_key = api_key
         # self.users = []
 
@@ -102,12 +104,28 @@ class EyesonClient:
     # Initialize room or connect to existing room
 
     @classmethod
+    def get_version(cls):
+        print("printing help")
+
+    @classmethod
     def get_room(cls, access_key, base_url=BASE_URL, debug=True, api_key=None):
         """
             Return an instance with the current room set to the given access key.
         """
-        client = cls(access_key, base_url, debug=debug)
+        client = cls(access_key=access_key, base_url=base_url, debug=debug)
+        room_details = client.get_room_details()
+        client.room_details = room_details
         return client
+
+    @classmethod
+    def register_guest(cls, url, debug=True):
+        parsed_url = urlparse(url)
+        guest_token = parse_qs(parsed_url.query)['guest'][0]
+        client = cls(debug=debug)
+        t1 = client.join_guest(guest_token)
+        client.room_details = json.loads(client.join_guest(guest_token))
+        client.access_key = print(client.room_details['access_key'])
+
 
     @classmethod
     def create_room(cls, username, api_key, custom_params={}, base_url=BASE_URL, debug=True):
@@ -136,7 +154,7 @@ class EyesonClient:
             print('Guest: ' + json_response['links']['guest_join'])
             print('Access Key: ' + json_response['access_key'])
 
-        client = cls(json_response['access_key'], api_key=api_key, base_url=base_url, debug=debug)
+        client = cls(access_key=json_response['access_key'], room_details=json_response, api_key=api_key, base_url=base_url, debug=debug)
         return client
 
 
@@ -177,8 +195,15 @@ class EyesonClient:
         """
         return self.__get('/rooms/' + self.access_key + '/recordings', auth=True)
 
+    # response = requests.post(BASE_URL + '/guests/' + guest_token + '?name=' + user)
+
 
     # Room methods that only need access token
+
+
+    def join_guest(self,guest_token, username='Guest'):
+        return self.__post('/guests/' + guest_token + '?name=' + username)
+
 
     def get_room_details(self):
         """
