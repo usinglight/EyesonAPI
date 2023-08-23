@@ -103,11 +103,17 @@ class EyesonClient:
 
     @classmethod
     def get_room(cls, access_key, base_url=BASE_URL, debug=True, api_key=None):
+        """
+            Return an instance with the current room set to the given access key.
+        """
         client = cls(access_key, base_url, debug=debug)
         return client
 
     @classmethod
     def create_room(cls, username, api_key, custom_params={}, base_url=BASE_URL, debug=True):
+        """
+            Create a new room.
+        """
         headers = {"Authorization": api_key}
         params = {'user[name]': username,
                   'user[id]': username,
@@ -135,35 +141,55 @@ class EyesonClient:
 
 
     def authenticate(self, api_key):
+        """
+            Authentication method required to set the API key for secure operations.
+        """
+
         self.api_key = api_key
 
 
     # Authenticated methods
 
     def get_webhooks(self):
+        """
+            Get all webhooks.  Needs authentication.
+        """
         return self.__get('/webhooks', auth=True)
 
     def create_webhook(self, url, types=None):
-
+        """
+            Create a new webhook.  Needs authentication.
+        """
         params = {"url": url,
                   "types": types}
 
         return self.__post('/webhooks', params, auth=True)
 
     def get_rooms(self):
+        """
+            Get all active roome by the current API user.  Needs authentication.
+        """
         return self.__get('/rooms', auth=True)
 
     def get_recordings(self):
+        """
+            Get all recordings captured by the current API user.  Needs authentication.
+        """
         return self.__get('/rooms/' + self.access_key + '/recordings', auth=True)
 
 
     # Room methods that only need access token
 
     def get_room_details(self):
+        """
+        Receive details of the current room.
+        """
         return self.__get('/rooms/' + self.access_key)
 
     def broadcast_message(self, content, type='chat'):
-
+        """
+        Broadcast data messages to all users of a meeting.
+        """
         params = {
             'type': 'chat',
             'content': content
@@ -172,7 +198,9 @@ class EyesonClient:
         return self.__post('/rooms/' + self.access_key + '/messages', params)
 
     def change_layout(self, layout_type='auto', layout_name='six', users=[]):
-
+        """
+        Set the layout of the current room.
+        """
         params = {
             'layout': layout_type,
             'name': layout_name,
@@ -182,7 +210,9 @@ class EyesonClient:
         return self.__post('/rooms/' + self.access_key + "/layout", params)
 
     def image_overlay(self, url=None, z_index=1):
-
+        """
+            Set the foreground (z=1) or bakground (z=-1) overlay for the current meeting from a PNG url.
+        """
         params = {
             'url': url,
             'z-index': z_index
@@ -191,7 +221,9 @@ class EyesonClient:
         return self.__post('/rooms/' + self.access_key + "/layers", params)
 
     def local_image_overlay(self, filename=None, z_index=1):
-
+        """
+            Set the foreground (z=1) or bakground (z=-1) overlay for the current meeting from a PNG file.
+        """
         params = {
             'z-index': z_index
         }
@@ -199,7 +231,9 @@ class EyesonClient:
         return self.__post('/rooms/' + self.access_key + "/layers", params, files={'file': open(filename, 'rb')})
 
     def text_overlay(self, title, content):
-
+        """
+            Creates a text box to overlay in the current meeting.
+        """
         params = {
             'insert[title]': title,
             'insert[content]': content
@@ -208,9 +242,15 @@ class EyesonClient:
         return self.__post('/rooms/' + self.access_key + "/layers", params)
 
     def delete_layers(self, z):
+        """
+            Removes a foreground or background in the current meeting (z=1 -> foreground, z=-1 -> background)
+        """
         return self.__delete('/rooms/' + self.access_key + '/layers/' + str(z))
 
     def playback(self, url=None, name=None, play_id=None, replacement_id=None):
+        """
+            Adds a video (from a public URL) to show in the current meeting.
+        """
 
         params = {
             'playback[url]': url,
@@ -221,5 +261,9 @@ class EyesonClient:
 
         return self.__post('/rooms/' + self.access_key + "/playbacks", params)
 
+
     def create_snapshot(self):
+        """
+            Creates a snapshot of the current meeting. Snapshots are saved in Eyesons cloud storage and can be downloaded from there.
+        """
         return self.__post('/rooms/' + self.access_key + "/snapshot")

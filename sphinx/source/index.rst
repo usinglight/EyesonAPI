@@ -13,17 +13,17 @@ Eyeson Python SDK
    :maxdepth: 2
    :caption: Contents:
 
+____
 
+.. automodule:: eyeson
 
-
+.. automodule:: eyeson.eyeson
+   :members:
 
 Indices and tables
-------------------
+-------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
 
-____
-
-.. automodule:: eyeson
