@@ -1,10 +1,12 @@
 import flet as ft 
-import eyeson
-
 import re
 import requests
 
-BASE_URL = 'https://api.eyeson.team'
+import sys
+sys.path.append('/Users/stefansteinbauer/Github/EyesonAPI/eyeson/')
+import eyeson
+
+
 def main(page: ft.Page):
     def get_access(s):
         match = re.search(r'guest=(.*)', s)
@@ -28,10 +30,12 @@ def main(page: ft.Page):
 
     def guest_add(e):
         access_key = get_access(guest_link.value)
+        access_key =str(access_key)
         if access_key:
             view.controls.append(ft.TextField(value=access_key))
             # how would I call the client ?
-            ec = eyeson.__init__(access_key, base_url=BASE_URL)
+            ec = eyeson.EyesonClient.get_room(access_key,base_url="https://api.eyeson.team")
+            ec.base_url = "https://api.eyeson.team"
             ec.broadcast_message('Hello World')
         else:
             print("Error getting access key") 
