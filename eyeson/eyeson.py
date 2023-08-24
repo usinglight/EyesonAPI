@@ -206,6 +206,9 @@ class EyesonClient:
     def join_guest(self,guest_token, username='Guest'):
         return self.__post('/guests/' + guest_token + '?name=' + username)
 
+    def join_call(self):
+        return self.__post('/rooms/' + self.access_key + '/join') 
+
 
     def get_room_details(self):
         """
