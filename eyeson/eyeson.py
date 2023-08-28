@@ -108,7 +108,7 @@ class EyesonClient:
         print("printing help")
 
     @classmethod
-    def get_room(cls, access_key, base_url=BASE_URL, debug=True, api_key=None):
+    def get_room(cls, access_key, base_url=BASE_URL, debug=True, api_key:str):
         """
             Return an instance with the current room set to the given access key.
         """

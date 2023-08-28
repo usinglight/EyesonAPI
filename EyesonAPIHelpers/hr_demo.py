@@ -2,7 +2,7 @@ import flet as ft
 
 """HR DEMO app
 tobedone:
-- fill dropdowns with user list
+- fill dropdowns with user list - need a client to join the meeting to receive the user list from SEPP
 - assign spots
 - create image overlays
 """
