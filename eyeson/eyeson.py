@@ -29,7 +29,6 @@ class EyesonClient:
 
         headers = None
         caller = sys._getframe(1).f_code.co_name
-        # url = self.base_url + '/rooms/' + self.access_key + resource
         url = self.base_url + resource
         self.__debug('GET: ' + url)
         if (auth):
@@ -105,6 +104,7 @@ class EyesonClient:
 
     @classmethod
     def get_version(cls):
+        #TODO:  Not currently implemented
         print("printing help")
 
     @classmethod
@@ -263,7 +263,7 @@ class EyesonClient:
 
     def bytes_image_overlay(self, bytes=None, z_index=1):
         """
-            Set the foreground (z=1) or bakground (z=-1) overlay for the current meeting from a PNG file.
+            Set the foreground (z=1) or bakground (z=-1) overlay for the current meeting from a bufferedReader object..
         """
         params = {
             'z-index': z_index
