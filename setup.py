@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='eyeson',
-    version='0.0.3',
+    version='0.0.5',
     packages=['eyeson'],
     url='https://www.eyeson.com/',
     license='GNU v3',
