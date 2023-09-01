@@ -1,17 +1,25 @@
-import qrcode
+import qrcode 
 import numpy as np
 
-# Create the mask 
-mask = np.zeros((21,21), dtype=bool)
-for i in range(21):
-    for j in range(21):
-        if (i - 10) ** 2 + (j - 10) ** 2 < 8 ** 2:
-            mask[i, j] = True
-
-# Generate the QR Code using the mask            
+# Create QR code object 
 qr = qrcode.QRCode(version=1, box_size=4, border=1)
 qr.add_data('https://www.eyeson.com')
 qr.make(fit=True)
-img = qr.make_image(mask_pattern=mask)
 
+# Get the QR matrix size  
+matrix = qr.get_matrix()
+size = matrix.shape[0]
+
+# Generate mask matching matrix size 
+mask = np.zeros((size, size), dtype=bool)
+center = size // 2
+for i in range(size):
+    for j in range(size):
+        if (i - center) ** 2 + (j - center) ** 2 < 8 ** 2:
+            mask[i, j] = True
+            
+# Generate image with mask applied
+img = qr.make_image(image_factory=None, mask_pattern=mask) 
+
+# Save the image
 img.save('rounded_qrcode.png')
