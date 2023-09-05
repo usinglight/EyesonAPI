@@ -1,0 +1,107 @@
+{
+  "access_key": "3S5KhaQpwg3i3yWgiRwYfeTw",
+  "ready": true,
+  "locked": false,
+  "room": {
+    "id": "631ee0c919c2320010bac7c0",
+    "name": "Are your eyes on?",
+    "ready": true,
+    "started_at": "2023-09-05T07:05:05.376Z",
+    "shutdown": true,
+    "sip": {
+      "uri": "conf_64f6d3215fe8df000fcd2c2c@integrations.visocon.com",
+      "domain": "integrations.visocon.com",
+      "authorizationUser": "conf_64f6d3215fe8df000fcd2c2c"
+    },
+    "guest_token": "4RLlak4aNXwtNiXQpmtMmjm0"
+  },
+  "team": { "name": "Accounts" },
+  "user": {
+    "id": "Assistant",
+    "room_id": "631ee0c919c2320010bac7c0",
+    "name": "Assistant",
+    "avatar": null,
+    "guest": true,
+    "blocked": false,
+    "ready": true,
+    "sip": {
+      "uri": "64bfa805cc76c3000f695b7e@integrations.visocon.com",
+      "domain": "integrations.visocon.com",
+      "wsServers": "wss://sipcore-1.visocon.com:443",
+      "instanceId": "5072d483-a9ca-a7c1-2041-6d694716d1f4",
+      "userAgentString": "visocon/webrtc",
+      "authorizationUser": "64bfa805cc76c3000f695b7e",
+      "displayName": "417373697374616e74",
+      "stunServers": ["stun:nuts.eyeson.com:3478"],
+      "turnServers": [
+        {
+          "urls": [
+            "turn:nuts.eyeson.com:3478",
+            "turn:nuts.eyeson.com:3478?transport=tcp",
+            "turns:nuts.eyeson.com:443?transport=tcp"
+          ],
+          "username": "1693987061:64bfa805cc76c3000f695b7e",
+          "password": "n9Fm8Oh99kjmJFqB/2KQwfWq8c8="
+        }
+      ],
+      "registerExpires": 60,
+      "password": "$2a$12$eRoGqHdagKEa.z39clw.Rus8qmikutce3kA1n546tWuCP6.n4yJH6"
+    }
+  },
+  "links": {
+    "self": "https://api.eyeson.team/rooms/3S5KhaQpwg3i3yWgiRwYfeTw",
+    "gui": "https://app.eyeson.team/?3S5KhaQpwg3i3yWgiRwYfeTw",
+    "guest_join": "https://app.eyeson.team/?guest=4RLlak4aNXwtNiXQpmtMmjm0",
+    "websocket": "https://api.eyeson.team/rt?access_key=3S5KhaQpwg3i3yWgiRwYfeTw"
+  },
+  "options": {
+    "show_names": true,
+    "show_label": true,
+    "exit_url": null,
+    "recording_available": true,
+    "broadcast_available": false,
+    "layout_available": true,
+    "layout": "auto",
+    "reaction_available": true,
+    "suggest_guest_names": true,
+    "lock_available": true,
+    "kick_available": true,
+    "sfu_mode": "ptp",
+    "layout_users": null,
+    "layout_name": null,
+    "voice_activation": false,
+    "custom_fields": {
+      "virtual_background": "true",
+      "virtual_background_allow_guest": "true",
+      "virtual_background_allow_local_image": "true"
+    },
+    "widescreen": true,
+    "background_color": "#121212"
+  },
+  "presentation": null,
+  "broadcasts": [],
+  "recording": null,
+  "snapshots": [],
+  "waiting_list": [],
+  "signaling": {
+    "type": "sepp",
+    "options": {
+      "client_id": "64bfa805cc76c3000f695b7e",
+      "conf_id": "64f6d3215fe8df000fcd2c2c",
+      "auth_token": "eyJhbGciOiJFUzM4NCJ9.eyJpc3MiOiJleWVzb24tY29tYXBpIiwiY2xpZW50X2lkIjoiNjRiZmE4MDVjYzc2YzMwMDBmNjk1YjdlIiwiZXhwIjoxNjkzOTA0MjYxLCJjb25mX2lkIjoiNjRmNmQzMjE1ZmU4ZGYwMDBmY2QyYzJjIn0.Br-cdG9XbXGkzFvFBdwYrF_vZ9L_ulbez0xDNUkxRHRtGhv6PCLmH7OBX8_m3U7amsdH8yQ4ludMO20zqMHWeoAwH06MvZxKsod1aKePYNyX5rdtNdxstr6AZBQ3pmhK",
+      "endpoint": "wss://sig.eyeson.com/call",
+      "stun_servers": ["stun:nuts.eyeson.com:3478"],
+      "turn_servers": [
+        {
+          "urls": [
+            "turn:nuts.eyeson.com:3478",
+            "turn:nuts.eyeson.com:3478?transport=tcp",
+            "turns:nuts.eyeson.com:443?transport=tcp"
+          ],
+          "username": "1693987061:64bfa805cc76c3000f695b7e",
+          "password": "n9Fm8Oh99kjmJFqB/2KQwfWq8c8="
+        }
+      ]
+    }
+  }
+}
