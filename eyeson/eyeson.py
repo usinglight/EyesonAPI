@@ -228,14 +228,15 @@ class EyesonClient:
 
         return self.__post('/rooms/' + self.access_key + '/messages', params)
 
-    def change_layout(self, layout_type='auto', layout_name='six', users=[]):
+    def change_layout(self, layout_type='auto', layout_name='six', users=[], map=None):
         """
         Set the layout of the current room.
         """
         params = {
             'layout': layout_type,
             'name': layout_name,
-            'users[]': users
+            'users[]': users,
+            'map': json.dumps(map)
         }
         return self.__post('/rooms/' + self.access_key + "/layout", params)
 

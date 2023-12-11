@@ -17,8 +17,14 @@ def main(argv):
     # ec.create_snapshot()
     # ec.get_room_details()
     # ec.image_overlay(url='https://eyeson-team.github.io/api/images/eyeson-overlay.png')
-    ec.local_image_overlay(filename='resources/images/eyeson-overlay.png')
-    ec.playback(url='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4', )
+    # ec.local_image_overlay(filename='resources/images/eyeson-overlay.png')
+    # ec.playback(url='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4', )
+
+    custom_map = [
+        [10, 10, 300, 600, 'auto']
+    ]
+
+    ec.change_layout(layout_name='custom-map', users=[''], map=custom_map)
 
 
 if __name__ == "__main__":

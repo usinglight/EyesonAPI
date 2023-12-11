@@ -9,7 +9,6 @@ ORIGINAL = (1280, 960)
 
 FONT = 'resources/fonts/Roboto-Bold.ttf'
 
-
 def has_transparency(img):
     if img.info.get("transparency", None) is not None:
         return True
