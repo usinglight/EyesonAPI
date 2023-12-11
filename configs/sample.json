@@ -3,6 +3,18 @@
   "description": "Example",
   "components": [
     {
+      "name": "title",
+      "type": "text",
+      "content": "Sample Title",
+      "font": "Roboto-Bold.ttf",
+      "color": "#ffff00",
+      "font_size": 40,
+      "x": 0,
+      "y": 887,
+      "width": 1280,
+      "height": 93
+    },
+    {
       "name": "logo",
       "type": "image",
       "location": "resources/images/eyeson_logo.png",
@@ -10,22 +22,6 @@
       "y": 852,
       "width": 240,
       "height": 96
-    },
-    {
-      "name": "title",
-      "type": "text",
-      "content": "Sample Title",
-      "x": 0,
-      "y": 887,
-      "width": 1280,
-      "height": 93
     }
   ]
 }
-
-
-
-
-
-
-

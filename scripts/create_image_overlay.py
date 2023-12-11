@@ -1,18 +1,13 @@
 import argparse
 import json
 import sys
-import requests
+import qrcode
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageColor
-import yaml
-
-# output_name = '../output_images/fg.png'
 
 WIDESCREEN = (1280, 720)
 ORIGINAL = (1280, 960)
 
 FONT = 'resources/fonts/Roboto-Bold.ttf'
-FONT = "resources/fonts/Tele Neo Office Bold.ttf"
-
 
 def has_transparency(img):
     if img.info.get("transparency", None) is not None:
@@ -30,11 +25,18 @@ def has_transparency(img):
     return False
 
 
-def create_text_box(img, content, position, fg_color, font=FONT, font_size=20):
+def create_text_box(img, content, position, fg_color='#ffffff', font=FONT, font_size=20, align='left'):
     d1 = ImageDraw.Draw(img)
-    myPosition = position
-    d1.text(myPosition, content, ImageColor.getrgb(fg_color), font=ImageFont.truetype(FONT, font_size))
-    # img.show()
+    font_obj = ImageFont.truetype(font, size=font_size)
+
+    if align =='center':
+        bbox = font_obj.getbbox(content)
+        content_width, content_height = (bbox[2]-bbox[0], bbox[3]-bbox[1])
+        new_position = ((img.width - content_width)/2, (img.height - content_height)/2)
+    else:
+        new_position = position
+    d1.text(new_position, content, ImageColor.getrgb(fg_color), font=font_obj)
+
     return img
 
 
@@ -55,14 +57,27 @@ def create_image(config, image_dir='../', screen_size='original'):
             img = Image.new('RGBA', (comp['width'], comp['height']),
                             (0,0,0,0))
             content = comp['content']
-            img = create_text_box(img, content, (0,0), '#ffffff')
+            font = 'resources/fonts/' + comp['font']
+            img = create_text_box(img, content, (0,0), fg_color=comp['color'], font=font, font_size=comp['font_size'], align=comp.get('align'))
+            new_image.paste(img, img_offset, mask=img)
+
+        elif (comp['type'] == 'fancy-box'):
+            img = Image.new('RGBA', (comp['width'], comp['height']),
+                            (0, 0, 0, 0))
+            d1 = ImageDraw.Draw(img)
+            d1.rounded_rectangle((0, 0, comp['width'], comp['height']), fill=ImageColor.getrgb(comp['fill']), radius=comp['radius'])
             new_image.paste(img, img_offset)
+
+        elif (comp['type'] == 'qrcode'):
+            img = qrcode.make(comp['link'])
+            sized_qr = img.resize((comp['width'], comp['height']))  # resize
+            new_image.paste(sized_qr, img_offset)
+
         elif (comp['type'] == 'image'):
             filename = comp['location']
             foreground = Image.open(filename)
             foreground = ImageOps.contain(foreground,
                                           (comp['width'], comp['height']))  # resize
-
             if has_transparency(foreground):
                 new_image.paste(foreground, img_offset, mask=foreground)
             else:
@@ -74,14 +89,12 @@ def create_image(config, image_dir='../', screen_size='original'):
 
 
 def create_bg_image(filename, screen_size='original'):
-    # Start with background image
-    new_image = Image.open(filename)
 
+    new_image = Image.open(filename)
     if screen_size == 'widescreen':
         new_image = new_image.resize(WIDESCREEN)
     else:
         new_image = new_image.resize(ORIGINAL)
-
     return new_image
 
 
@@ -103,7 +116,7 @@ def main(argv):
     foreground.save('tmp/fg.png','PNG')
 
     if(args.background):
-        background = create_bg_image(args.background)
+        background = create_bg_image(args.background, screen_size=screen_size)
         # background.show()
         background.save('tmp/bg.png','PNG')
 

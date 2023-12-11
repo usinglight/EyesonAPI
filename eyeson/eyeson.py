@@ -29,7 +29,6 @@ class EyesonClient:
 
         headers = None
         caller = sys._getframe(1).f_code.co_name
-        # url = self.base_url + '/rooms/' + self.access_key + resource
         url = self.base_url + resource
         self.__debug('GET: ' + url)
         if (auth):
@@ -105,6 +104,7 @@ class EyesonClient:
 
     @classmethod
     def get_version(cls):
+        #TODO:  Not currently implemented
         print("printing help")
 
     @classmethod
@@ -130,7 +130,7 @@ class EyesonClient:
 
 
     @classmethod
-    def create_room(cls, username, api_key, custom_params={}, base_url=BASE_URL, debug=True):
+    def create_room(cls, username, api_key, custom_params={}, base_url=BASE_URL, debug=False):
         """
             Create a new room.
         """
@@ -148,7 +148,7 @@ class EyesonClient:
         params = {**params, **custom_params}
 
 
-        response = requests.post(BASE_URL + '/rooms', headers=headers, params=params)
+        response = requests.post(base_url + '/rooms', headers=headers, params=params)
         if (response.status_code == 201):
             print('Success:')
             json_response = json.loads(response.text)
@@ -156,7 +156,7 @@ class EyesonClient:
             print('Guest: ' + json_response['links']['guest_join'])
             print('Access Key: ' + json_response['access_key'])
 
-        client = cls(access_key=json_response['access_key'], room_details=json.loads(json_response), api_key=api_key, base_url=base_url, debug=debug)
+        client = cls(access_key=json_response['access_key'], room_details=json_response, api_key=api_key, base_url=base_url, debug=debug)
         return client
 
 
@@ -231,16 +231,16 @@ class EyesonClient:
 
         return self.__post('/rooms/' + self.access_key + '/messages', params)
 
-    def change_layout(self, layout_type='auto', layout_name='six', users=[]):
+    def change_layout(self, layout_type='auto', layout_name='six', users=[], map=None):
         """
         Set the layout of the current room.
         """
         params = {
             'layout': layout_type,
             'name': layout_name,
-            'users[]': users
+            'users[]': users,
+            'map': json.dumps(map)
         }
-
         return self.__post('/rooms/' + self.access_key + "/layout", params)
 
     def image_overlay(self, url=None, z_index=1):
@@ -264,6 +264,17 @@ class EyesonClient:
 
         return self.__post('/rooms/' + self.access_key + "/layers", params, files={'file': open(filename, 'rb')})
 
+
+    def bytes_image_overlay(self, bytes=None, z_index=1):
+        """
+            Set the foreground (z=1) or bakground (z=-1) overlay for the current meeting from a bufferedReader object..
+        """
+        params = {
+            'z-index': z_index
+        }
+
+        return self.__post('/rooms/' + self.access_key + "/layers", params, files={'file': bytes})
+
     def text_overlay(self, title, content):
         """
             Creates a text box to overlay in the current meeting.
@@ -281,7 +292,7 @@ class EyesonClient:
         """
         return self.__delete('/rooms/' + self.access_key + '/layers/' + str(z))
 
-    def playback(self, url=None, name=None, play_id=None, replacement_id=None):
+    def playback(self, url=None, name=None, play_id=None, replacement_id=None, loop_count=0):
         """
             Adds a video (from a public URL) to show in the current meeting.
         """
@@ -290,7 +301,8 @@ class EyesonClient:
             'playback[url]': url,
             'playback[name]': name,
             'playback[play_id]': play_id,
-            'playback[replacement_id]': replacement_id
+            'playback[replacement_id]': replacement_id,
+            'playback[loop_count]': loop_count
         }
 
         return self.__post('/rooms/' + self.access_key + "/playbacks", params)
